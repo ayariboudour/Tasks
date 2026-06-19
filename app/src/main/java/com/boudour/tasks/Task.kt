@@ -1,0 +1,13 @@
+package com.boudour.tasks
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Task(
+    @ColumnInfo(name = "task_id") @PrimaryKey(autoGenerate = true) val taskId: Int,
+    val title: String,
+    val description: String? = null,
+    @ColumnInfo(name = "is_started")val isStarted: Boolean = false
+)
