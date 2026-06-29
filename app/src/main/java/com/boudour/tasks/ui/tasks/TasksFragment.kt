@@ -42,9 +42,9 @@ class TasksFragment : Fragment(), TaskAdapter.TaskUpdatedListener {
     }
 
     override fun onTaskUpdated(task: Task) {
-
         thread {
             taskDeo.updateTask(task)
+            fetchAllTasks()
         }
     }
 }

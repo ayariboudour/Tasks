@@ -1,5 +1,6 @@
 package com.boudour.tasks.ui.tasks
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,16 @@ class TaskAdapter(val tasks: List<Task>, private val listener: TaskAdapter.TaskU
 
     inner class ViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
+            binding.checkBox.isChecked = task.isCompleted
+            binding.toggleStar.isChecked = task.isStarted
+
+            if (task.isCompleted) {
+                binding.textViewTitle.paintFlags =
+                    binding.textViewTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                binding.textViewDetails.paintFlags =
+                    binding.textViewDetails.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
+
             binding.textViewTitle.text = task.title
             binding.textViewDetails.text = task.description
             binding.checkBox.addOnCheckedStateChangedListener { _, state ->
@@ -45,7 +56,7 @@ class TaskAdapter(val tasks: List<Task>, private val listener: TaskAdapter.TaskU
                 listener.onTaskUpdated(updateTask)
             }
             binding.toggleStar.addOnCheckedStateChangedListener { _, state ->
-                val starTask = when(state){
+                val starTask = when (state) {
                     MaterialCheckBox.STATE_CHECKED -> task.copy(isStarted = true)
                     else -> task.copy(isStarted = false)
                 }
