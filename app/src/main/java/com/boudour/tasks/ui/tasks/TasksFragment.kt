@@ -5,11 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.boudour.tasks.data.Task
+import com.boudour.tasks.data.GetItDoneDatabase
+import com.boudour.tasks.data.TaskDao
 import com.boudour.tasks.databinding.FragmentTasksBinding
+import kotlin.concurrent.thread
 
 class TasksFragment : Fragment() {
     private lateinit var binding: FragmentTasksBinding
+    private val taskDeo: TaskDao by lazy{
+        GetItDoneDatabase.getDataBase(requireContext()).getTaskDao()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +27,12 @@ class TasksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = TaskAdapter(tasks = listOf(
-            Task(title = "Task 1", description = "Description 1"), Task(title = "Task 2", description = "Description 2"),
-            Task(title = "Task 3", description = "Description 3")))
+
+        thread {
+            val tasks = taskDeo.getAllTasks()
+            requireActivity().runOnUiThread {
+                binding.recyclerView.adapter = TaskAdapter(tasks)
+            }
+        }
     }
 }

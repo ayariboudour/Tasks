@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener {
             showAddTaskDialog()
         }
-        database = GetItDoneDatabase.createDatabase(this)
+        database = GetItDoneDatabase.getDataBase(this)
     }
 
     private fun showAddTaskDialog() {
