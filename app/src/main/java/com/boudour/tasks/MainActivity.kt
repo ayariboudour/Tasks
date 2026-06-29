@@ -1,6 +1,7 @@
 package com.boudour.tasks
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -42,6 +43,21 @@ class MainActivity : AppCompatActivity() {
         val dialogBinding = AddDialogTaskBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(dialogBinding.root)
+        dialogBinding.buttonShowDetails.setOnClickListener {
+            dialogBinding.editTextTaskDetails.visibility =
+                if (dialogBinding.editTextTaskDetails.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
+
+        dialogBinding.buttonSave.setOnClickListener {
+            val task = Task(
+                title = dialogBinding.editTextTaskTitle.text.toString(),
+                description = dialogBinding.editTextTaskDetails.text.toString()
+            )
+            thread {
+                taskDao.createTask(task)
+            }
+            dialog.dismiss()
+        }
         dialog.show()
     }
 

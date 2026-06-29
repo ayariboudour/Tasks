@@ -6,4 +6,5 @@
     <string name="dialog_add_task_details_hint">add details</string>
     <string name="dialog_add_details_button">Add details</string>
     <string name="dialog_add_tasks_button">Star task</string>
+    <string name="save_text_button">Save</string>
 </resources>
