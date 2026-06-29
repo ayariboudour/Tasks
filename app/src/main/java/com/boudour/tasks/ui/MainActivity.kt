@@ -19,6 +19,7 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: GetItDoneDatabase
+    private val tasksFragment: TasksFragment= TasksFragment()
     private val taskDao: TaskDao by lazy {
         database.getTaskDao()
     }
@@ -56,13 +57,14 @@ class MainActivity : AppCompatActivity() {
                 taskDao.createTask(task)
             }
             dialog.dismiss()
+            tasksFragment.fetchAllTasks()
         }
         dialog.show()
     }
 
     inner class PagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         override fun createFragment(position: Int): Fragment {
-            return TasksFragment()
+            return tasksFragment
         }
 
         override fun getItemCount(): Int = 1
