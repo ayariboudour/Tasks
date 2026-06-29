@@ -1,5 +1,6 @@
 package com.boudour.tasks.ui.tasks
 
+import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,9 +9,9 @@ import com.boudour.tasks.data.Task
 import com.boudour.tasks.databinding.ItemTaskBinding
 import com.google.android.material.checkbox.MaterialCheckBox
 
-class TaskAdapter(val tasks: List<Task>, private val listener: TaskAdapter.TaskUpdatedListener) :
+class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
     RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
-
+    private var tasks: List<Task> = listOf()
     override fun getItemCount() = tasks.size
 
     override fun onCreateViewHolder(
@@ -33,7 +34,11 @@ class TaskAdapter(val tasks: List<Task>, private val listener: TaskAdapter.TaskU
         holder.bind(tasks[position])
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun setTasks(tasks: List<Task>) {
+        this.tasks = tasks
+        notifyDataSetChanged()
+    }
     inner class ViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             binding.checkBox.isChecked = task.isCompleted

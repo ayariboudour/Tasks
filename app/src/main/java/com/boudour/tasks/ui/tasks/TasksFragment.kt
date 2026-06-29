@@ -13,9 +13,11 @@ import kotlin.concurrent.thread
 
 class TasksFragment : Fragment(), TaskAdapter.TaskUpdatedListener {
     private lateinit var binding: FragmentTasksBinding
-    private val taskDeo: TaskDao by lazy{
+    private val taskDeo: TaskDao by lazy {
         GetItDoneDatabase.getDataBase(requireContext()).getTaskDao()
     }
+
+    private val adapter: TaskAdapter = TaskAdapter(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +30,7 @@ class TasksFragment : Fragment(), TaskAdapter.TaskUpdatedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.recyclerView.adapter = adapter
         fetchAllTasks()
     }
 
@@ -36,7 +38,7 @@ class TasksFragment : Fragment(), TaskAdapter.TaskUpdatedListener {
         thread {
             val tasks = taskDeo.getAllTasks()
             requireActivity().runOnUiThread {
-                binding.recyclerView.adapter = TaskAdapter(tasks = tasks, listener = this)
+                adapter.setTasks(tasks)
             }
         }
     }
