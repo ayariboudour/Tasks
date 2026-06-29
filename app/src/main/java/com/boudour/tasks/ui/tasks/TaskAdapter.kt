@@ -39,6 +39,7 @@ class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
         this.tasks = tasks
         notifyDataSetChanged()
     }
+
     inner class ViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             binding.checkBox.isChecked = task.isCompleted
@@ -49,23 +50,20 @@ class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
                     binding.textViewTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 binding.textViewDetails.paintFlags =
                     binding.textViewDetails.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            } else {
+                binding.textViewTitle.paintFlags = 0
+                binding.textViewDetails.paintFlags = 0
             }
 
             binding.textViewTitle.text = task.title
             binding.textViewDetails.text = task.description
-            binding.checkBox.addOnCheckedStateChangedListener { _, state ->
-                val updateTask = when (state) {
-                    MaterialCheckBox.STATE_CHECKED -> task.copy(isCompleted = true)
-                    else -> task.copy(isCompleted = false)
-                }
+            binding.checkBox.setOnClickListener {
+                val updateTask = task.copy(isCompleted = binding.checkBox.isChecked)
                 listener.onTaskUpdated(updateTask)
             }
-            binding.toggleStar.addOnCheckedStateChangedListener { _, state ->
-                val starTask = when (state) {
-                    MaterialCheckBox.STATE_CHECKED -> task.copy(isStarted = true)
-                    else -> task.copy(isStarted = false)
-                }
-                listener.onTaskUpdated(starTask)
+            binding.toggleStar.setOnClickListener {
+                val updateTask = task.copy(isStarted = binding.toggleStar.isChecked)
+                listener.onTaskUpdated(updateTask)
             }
         }
     }
