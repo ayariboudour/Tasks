@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.boudour.tasks.data.Task
 import com.boudour.tasks.databinding.ItemTaskBinding
-import com.google.android.material.checkbox.MaterialCheckBox
 
 class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
     RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
@@ -36,7 +35,9 @@ class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
 
     @SuppressLint("NotifyDataSetChanged")
     fun setTasks(tasks: List<Task>) {
-        this.tasks = tasks
+        this.tasks = tasks.sortedBy {
+            it.isCompleted
+        }
         notifyDataSetChanged()
     }
 
