@@ -8,14 +8,20 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.boudour.tasks.data.GetItDoneDatabase
 import com.boudour.tasks.data.Task
+import com.boudour.tasks.data.TaskDao
 import com.boudour.tasks.databinding.ActivityMainBinding
 import com.boudour.tasks.databinding.AddDialogTaskBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var database: GetItDoneDatabase
+    private val taskDao: TaskDao by lazy {
+        database.getTaskDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,29 +35,14 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener {
             showAddTaskDialog()
         }
-        val database = GetItDoneDatabase.createDatabase(this)
-        val taskDao = database.getTaskDao()
-
-        thread {
-            taskDao.createTask(
-                Task(
-                    title = "Some task"
-                )
-            )
-            taskDao.getAllTasks()
-        }
+        database = GetItDoneDatabase.createDatabase(this)
     }
 
     private fun showAddTaskDialog() {
         val dialogBinding = AddDialogTaskBinding.inflate(layoutInflater)
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Add new Task")
-            .setView(dialogBinding.root)
-            .setPositiveButton("Save") { _, _ ->
-                Toast.makeText(this, "Task added", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(dialogBinding.root)
+        dialog.show()
     }
 
     inner class PagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
