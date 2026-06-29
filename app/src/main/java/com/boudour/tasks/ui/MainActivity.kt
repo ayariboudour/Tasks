@@ -1,8 +1,7 @@
-package com.boudour.tasks
+package com.boudour.tasks.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -12,8 +11,8 @@ import com.boudour.tasks.data.Task
 import com.boudour.tasks.data.TaskDao
 import com.boudour.tasks.databinding.ActivityMainBinding
 import com.boudour.tasks.databinding.AddDialogTaskBinding
+import com.boudour.tasks.ui.tasks.TasksFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.concurrent.thread
 

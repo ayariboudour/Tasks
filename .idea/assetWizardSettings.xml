@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialsymbolsoutlined/add/outline_add_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialsymbolsoutlined/kid_star/outline_kid_star_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="icon_add" />
-                            <entry key="sourceFile" value="C:\Users\ayari\AndroidStudioProjects\Tasks" />
+                            <entry key="outputName" value="outline_kid_star_24" />
+                            <entry key="sourceFile" value="$USER_HOME$/C:\Users\ayari\AndroidStudioProjects\Tasks" />
                           </map>
                         </option>
                       </PersistentState>
