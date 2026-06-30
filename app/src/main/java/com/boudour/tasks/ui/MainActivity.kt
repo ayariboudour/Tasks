@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             buttonSave.isEnabled = false
 
             editTextTaskTitle.addTextChangedListener { input ->
-                buttonSave.isEnabled = !input.isNullOrEmpty()
+                buttonSave.isEnabled = isInputValid(input)
             }
 
             buttonShowDetails.setOnClickListener {
@@ -72,6 +72,10 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
         }
 
+    }
+
+    private fun isInputValid(input: Editable?): Boolean {
+        return !input?.trim().isNullOrEmpty() && input.length > 1
     }
 
     inner class PagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
