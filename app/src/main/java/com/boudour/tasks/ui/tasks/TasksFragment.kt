@@ -11,7 +11,7 @@ import com.boudour.tasks.data.TaskDao
 import com.boudour.tasks.databinding.FragmentTasksBinding
 import kotlin.concurrent.thread
 
-class TasksFragment : Fragment(), TaskAdapter.TaskUpdatedListener {
+class TasksFragment : Fragment(), TaskAdapter.TaskItemClickListener {
     private lateinit var binding: FragmentTasksBinding
     private val taskDeo: TaskDao by lazy {
         GetItDoneDatabase.getDataBase(requireContext()).getTaskDao()
@@ -46,6 +46,13 @@ class TasksFragment : Fragment(), TaskAdapter.TaskUpdatedListener {
     override fun onTaskUpdated(task: Task) {
         thread {
             taskDeo.updateTask(task)
+            fetchAllTasks()
+        }
+    }
+
+    override fun onTaskDeleted(task: Task) {
+        thread {
+            taskDeo.deleteTask(task)
             fetchAllTasks()
         }
     }

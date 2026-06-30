@@ -5,11 +5,12 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.boudour.tasks.data.Task
 import com.boudour.tasks.databinding.ItemTaskBinding
 
-class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
+class TaskAdapter(private val listener: TaskAdapter.TaskItemClickListener) :
     RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
     private var tasks: List<Task> = listOf()
     override fun getItemCount() = tasks.size
@@ -45,6 +46,10 @@ class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
     inner class ViewHolder(val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             binding.apply {
+                root.setOnLongClickListener {
+                    listener.onTaskDeleted(task)
+                    true
+                }
                 checkBox.isChecked = task.isCompleted
                 toggleStar.isChecked = task.isStarted
 
@@ -76,8 +81,9 @@ class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
         }
     }
 
-    interface TaskUpdatedListener {
+    interface TaskItemClickListener {
         fun onTaskUpdated(task: Task)
+        fun onTaskDeleted(task: Task)
     }
 
 }
