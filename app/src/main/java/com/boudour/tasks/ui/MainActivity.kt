@@ -1,8 +1,6 @@
 package com.boudour.tasks.ui
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -15,6 +13,7 @@ import com.boudour.tasks.data.TaskDao
 import com.boudour.tasks.databinding.ActivityMainBinding
 import com.boudour.tasks.databinding.AddDialogTaskBinding
 import com.boudour.tasks.ui.tasks.TasksFragment
+import com.boudour.tasks.util.InputValidator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.concurrent.thread
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             buttonSave.isEnabled = false
 
             editTextTaskTitle.addTextChangedListener { input ->
-                buttonSave.isEnabled = isInputValid(input)
+                buttonSave.isEnabled = InputValidator.isInputValid(input?.toString())
             }
 
             buttonShowDetails.setOnClickListener {
@@ -73,11 +72,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    private fun isInputValid(input: Editable?): Boolean {
-        return !input?.trim().isNullOrEmpty() && input.length > 1
-    }
-
     inner class PagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
         override fun createFragment(position: Int): Fragment {
             return tasksFragment
