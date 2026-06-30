@@ -1,8 +1,11 @@
 package com.boudour.tasks.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -19,7 +22,7 @@ import kotlin.concurrent.thread
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val database: GetItDoneDatabase by lazy { GetItDoneDatabase.getDataBase(this) }
-    private val tasksFragment: TasksFragment= TasksFragment()
+    private val tasksFragment: TasksFragment = TasksFragment()
     private val taskDao: TaskDao by lazy {
         database.getTaskDao()
     }
@@ -43,6 +46,13 @@ class MainActivity : AppCompatActivity() {
         AddDialogTaskBinding.inflate(layoutInflater).apply {
             val dialog = BottomSheetDialog(this@MainActivity)
             dialog.setContentView(root)
+
+            buttonSave.isEnabled = false
+
+            editTextTaskTitle.addTextChangedListener { input ->
+                buttonSave.isEnabled = !input.isNullOrEmpty()
+            }
+
             buttonShowDetails.setOnClickListener {
                 editTextTaskDetails.visibility =
                     if (editTextTaskDetails.visibility == View.VISIBLE) View.GONE else View.VISIBLE
