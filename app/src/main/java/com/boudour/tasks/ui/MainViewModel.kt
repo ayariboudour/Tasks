@@ -1,9 +1,10 @@
 package com.boudour.tasks.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.boudour.tasks.GetItDoneApplication
 import com.boudour.tasks.data.Task
-import kotlin.concurrent.thread
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -14,7 +15,7 @@ class MainViewModel : ViewModel() {
             title = title,
             description = description
         )
-        thread {
+        viewModelScope.launch {
             taskDao.createTask(task)
         }
     }

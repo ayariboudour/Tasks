@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.boudour.tasks.data.GetItDoneDatabase
+import androidx.lifecycle.lifecycleScope
 import com.boudour.tasks.data.Task
-import com.boudour.tasks.data.TaskDao
 import com.boudour.tasks.databinding.FragmentTasksBinding
-import kotlin.concurrent.thread
+import kotlinx.coroutines.launch
 
 class TasksFragment : Fragment(), TaskAdapter.TaskItemClickListener {
     private lateinit var binding: FragmentTasksBinding
@@ -33,10 +32,9 @@ class TasksFragment : Fragment(), TaskAdapter.TaskItemClickListener {
     }
 
     fun fetchAllTasks() {
-        viewModel.fetchTasks { tasks ->
-            requireActivity().runOnUiThread {
-                adapter.setTasks(tasks)
-            }
+        lifecycleScope.launch {
+           val tasks = viewModel.fetchTasks()
+            adapter.setTasks(tasks)
         }
     }
 

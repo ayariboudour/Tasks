@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
             }
             setContentView(root)
         }
-
     }
 
     private fun showAddTaskDialog() {
