@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.boudour.tasks.data.GetItDoneDatabase
 import com.boudour.tasks.data.Task
 import com.boudour.tasks.data.TaskDao
@@ -13,10 +14,7 @@ import kotlin.concurrent.thread
 
 class TasksFragment : Fragment(), TaskAdapter.TaskItemClickListener {
     private lateinit var binding: FragmentTasksBinding
-    private val taskDeo: TaskDao by lazy {
-        GetItDoneDatabase.getDataBase(requireContext()).getTaskDao()
-    }
-
+    private val viewModel: TasksViewModel by viewModels()
     private val adapter: TaskAdapter = TaskAdapter(this)
 
     override fun onCreateView(
@@ -35,8 +33,7 @@ class TasksFragment : Fragment(), TaskAdapter.TaskItemClickListener {
     }
 
     fun fetchAllTasks() {
-        thread {
-            val tasks = taskDeo.getAllTasks()
+        viewModel.fetchTasks { tasks ->
             requireActivity().runOnUiThread {
                 adapter.setTasks(tasks)
             }
@@ -44,16 +41,10 @@ class TasksFragment : Fragment(), TaskAdapter.TaskItemClickListener {
     }
 
     override fun onTaskUpdated(task: Task) {
-        thread {
-            taskDeo.updateTask(task)
-            fetchAllTasks()
-        }
+        viewModel.updateTask(task)
     }
 
     override fun onTaskDeleted(task: Task) {
-        thread {
-            taskDeo.deleteTask(task)
-            fetchAllTasks()
-        }
+        viewModel.deleteTask(task)
     }
 }
