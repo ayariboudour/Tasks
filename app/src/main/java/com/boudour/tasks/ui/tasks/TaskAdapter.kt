@@ -3,6 +3,7 @@ package com.boudour.tasks.ui.tasks
 import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.boudour.tasks.data.Task
@@ -56,9 +57,13 @@ class TaskAdapter(private val listener: TaskAdapter.TaskUpdatedListener) :
                     textViewTitle.paintFlags = 0
                     textViewDetails.paintFlags = 0
                 }
-
                 textViewTitle.text = task.title
-                textViewDetails.text = task.description
+                if (task.description.isNullOrEmpty()) {
+                    textViewDetails.visibility = View.GONE
+                } else {
+                    textViewDetails.text = task.description
+                    textViewDetails.visibility = View.VISIBLE
+                }
                 checkBox.setOnClickListener {
                     val updateTask = task.copy(isCompleted = checkBox.isChecked)
                     listener.onTaskUpdated(updateTask)
